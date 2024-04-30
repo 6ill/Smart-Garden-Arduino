@@ -12,6 +12,7 @@ def connect_database():
         humidity REAL,
         light_intensity REAL,
         status INT
+        )
     '''
     c.execute(query)
     conn.commit()
