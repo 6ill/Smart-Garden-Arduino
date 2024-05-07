@@ -1,7 +1,7 @@
 import sqlite3
 
 def connect_database():
-    conn = sqlite3.connect('sensor_data.db')
+    conn = sqlite3.connect('sensor_data.db', check_same_thread=False)
     c = conn.cursor()
     query = '''
         CREATE TABLE IF NOT EXISTS sensor_data (
@@ -11,7 +11,7 @@ def connect_database():
         moisture REAL,
         humidity REAL,
         light_intensity REAL,
-        status INT
+        status CHAR(1)
         )
     '''
     c.execute(query)
@@ -32,4 +32,4 @@ def fetch_all_sensor_data(conn):
 
 if __name__ == "__main__":
     conn = connect_database()
-    print(fetch_all_sensor_data(conn))
+    print(fetch_all_sensor_data(conn)[-10:])
