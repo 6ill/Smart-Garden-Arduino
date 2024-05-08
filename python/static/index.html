@@ -1,39 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
     <title>Arduino Interface</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        $(document).ready(function() {
-            function updateData() {
-                $.get("/data", function(data) {
-                    $('#humidity').text(data.humidity);
-                    $('#temperature').text(data.temperature + ' Celsius');
-                    $('#moisture').text(data.moist_pct + '%');
-                    $('#light').text(data.light);
-                    $('#status').text(data.status);
-                });
-            }
+      // $(document).ready(function() {
+      //     function updateData() {
+      //         $.get("/data", function(data) {
+      //             $('#humidity-value').text(data.humidity);
+      //             $('#temperature-value').text(data.temperature + ' C');
+      //             $('#soil-value').text(data.moist_pct + '%');
+      //             $('#light-value').text(data.light);
+      //             $('#status').text(data.status);
+      //         });
+      //     }
 
-            setInterval(updateData, 1000); // Update every second
-        });
+      //     setInterval(updateData, 1000); // Update every second
+      // });
     </script>
-</head>
-<body>
-    <!-- Try to collab with Github -->
-    <!-- Halo -->
-    <h1>Sensor Data</h1>
-    <p>Humidity: <span id="humidity"></span></p>
-    <p>Temperature: <span id="temperature"></span></p>
-    <p>Moisture: <span id="moisture"></span></p>
-    <p>Light: <span id="light"></span></p>
-    <p>Status: <span id="status"></span></p>
-    <form action="/control" method="post">
+  </head>
+  <body>
+    <main>
+      <h1>Smart Garden Dashboard</h1>
+      <div class="dashboard">
+        <div class="temperature-container">
+            Temperature:
+            <span id="thermometer">
+                <span id="temperature-indicator"></span>
+            </span>
+            <h2 id="temperature-value">25 C</h2>
+        </div>
+        <div class="group-1">
+          <div class="group-2">
+            <div class="light-container">
+                Light:
+                <h2 id="light-value">22</h2>
+            </div>
+            <div class="humidity-container">
+                Humidity:
+                <h2 id="humidity-value">22</h2>
+                <span id="humidity-indicator"></span>
+            </div>
+            <div class="soil-container">
+                Soil Moisture:
+                <h2 id="soil-value">22</h2>
+                <span id="soil-indicator"></span>
+            </div>
+          </div>
+          <div class="manual-control-container"></div>
+        </div>
+      </div>
+    </main>
+    <div class="blur-circle"></div>
+
+    <!-- <form action="/control" method="post">
         <h4>Input second how long to water</h4>
         <input type="number" min="1" max="1000" name="second" style="width: 30px;">
         <input type="submit" value="Water">
-    </form>
-</body>
+    </form> -->
+  </body>
 </html>
