@@ -86,18 +86,19 @@
           $("#light-value").text(data.light);
 
           $("#status").text(data.status);
+          
+          $.get("/mouse", (data) => {  
+              $('#mouse').text(data.status);
+              if (data.status == '1') {
+                  $.post("/mouse")
+              } else {
+                  $.post("/mouse")
+              }
+  
+              // fetch('/mouse', {method: 'POST'})
+          })
         }
         
-        $.get("/mouse", (data) => {  
-            $('#mouse').text(data.status);
-            if (data.status == '1') {
-                $.post("/mouse")
-            } else {
-                $.post("/mouse")
-            }
-
-            // fetch('/mouse', {method: 'POST'})
-        })
 
         setInterval(updateData, 1000); // Update every second
       });
