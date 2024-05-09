@@ -9,15 +9,26 @@
         $(document).ready(function() {
             function updateData() {
                 $.get("/data", function(data) {
-                    $('#humidity').text(data.humidity);
+                    $('#humidity').text(data.humidity + '%');
                     $('#temperature').text(data.temperature + ' Celsius');
                     $('#moisture').text(data.moist_pct + '%');
                     $('#light').text(data.light);
                     $('#status').text(data.status);
                 });
+
+                $.get("/mouse", (data) => {  
+                    $('#mouse').text(data.status);
+                    if (data.status == '1') {
+                        $.post("/mouse")
+                    } else {
+                        $.post("/mouse")
+                    }
+
+                    // fetch('/mouse', {method: 'POST'})
+                })
             }
 
-            setInterval(updateData, 1000); // Update every second
+            setInterval(updateData, 500); // Update every second
         });
     </script>
 </head>
@@ -28,6 +39,7 @@
     <p>Moisture: <span id="moisture"></span></p>
     <p>Light: <span id="light"></span></p>
     <p>Status: <span id="status"></span></p>
+    <p>Status Mouse: <span id="mouse"></span></p>
     <form action="/control" method="post">
         <h4>Input second how long to water</h4>
         <input type="number" min="1" max="1000" name="second" style="width: 30px;">

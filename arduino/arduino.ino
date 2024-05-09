@@ -31,16 +31,23 @@ void setup() {
 }
 
 void activate_buzzer(){
-  tone(BUZZER_PIN, 400 , 200);
-  delay(150);
-  noTone(BUZZER_PIN);
+  for(int i=0; i<3;i++){
+    tone(BUZZER_PIN, 400 , 200);
+    delay(150);
+    noTone(BUZZER_PIN);
+    delay(400);
+  }
+ 
 }
 
 void triggered(int second){
-  actuator_status = 1;
-  digitalWrite(LED_PIN, HIGH);
-  activate_buzzer();  
-  activate_servo(second);
+  if(second > 99){
+    activate_buzzer();  
+  } else {
+    actuator_status = 1;
+    digitalWrite(LED_PIN, HIGH);
+    activate_servo(second);
+  }
 }
 
 void loop() {
@@ -59,11 +66,10 @@ void loop() {
   if (Serial.available() >= 2) {
     int second = Serial.read() << 8 | Serial.read();
     triggered(second);
-    
   }
 
   if(moisture_percentage < 75 && light_intensity > 30){
-    triggered(3);
+    triggered(1);
   } else {
     actuator_status= 0;
     digitalWrite(LED_PIN, LOW);
