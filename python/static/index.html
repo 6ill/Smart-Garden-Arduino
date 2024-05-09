@@ -6,95 +6,90 @@
     <link rel="stylesheet" href="style.css" />
     <title>Arduino Interface</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            function updateData() {
-                $.get("/data", function(data) {
-                    $('#humidity').text(data.humidity + '%');
-                    $('#temperature').text(data.temperature + ' Celsius');
-                    $('#moisture').text(data.moist_pct + '%');
-                    $('#light').text(data.light);
-                    $('#status').text(data.status);
-                });
-
-                $.get("/mouse", (data) => {  
-                    $('#mouse').text(data.status);
-                    if (data.status == '1') {
-                        $.post("/mouse")
-                    } else {
-                        $.post("/mouse")
-                    }
-
-                    // fetch('/mouse', {method: 'POST'})
-                })
-            }
-
-            setInterval(updateData, 500); // Update every second
-        });
-    </script>
-</head>
-<body>
-    <h1>Sensor Data</h1>
-    <p>Humidity: <span id="humidity"></span></p>
-    <p>Temperature: <span id="temperature"></span></p>
-    <p>Moisture: <span id="moisture"></span></p>
-    <p>Light: <span id="light"></span></p>
-    <p>Status: <span id="status"></span></p>
-    <p>Status Mouse: <span id="mouse"></span></p>
-    <form action="/control" method="post">
-      // $(document).ready(function() {
-      //     function updateData() {
-      //         $.get("/data", function(data) {
-      //             $('#humidity-value').text(data.humidity);
-      //             $('#temperature-value').text(data.temperature + ' C');
-      //             $('#soil-value').text(data.moist_pct + '%');
-      //             $('#light-value').text(data.light);
-      //             $('#status').text(data.status);
-      //         });
-      //     }
-
-      //     setInterval(updateData, 1000); // Update every second
-      // });
-    </script>
   </head>
   <body>
     <main>
       <h1>Smart Garden Dashboard</h1>
       <div class="dashboard">
         <div class="temperature-container">
-            Temperature:
-            <span id="thermometer">
-                <span id="temperature-indicator"></span>
-            </span>
-            <h2 id="temperature-value">25 C</h2>
+          Temperature:
+          <span id="thermometer">
+            <span id="temperature-indicator"></span>
+          </span>
+          <h2 id="temperature-value">_</h2>
         </div>
         <div class="group-1">
           <div class="group-2">
             <div class="light-container">
-                Light:
-                <h2 id="light-value">22</h2>
+              Light:
+              <h2 id="light-value">_</h2>
             </div>
             <div class="humidity-container">
-                Humidity:
-                <h2 id="humidity-value">22</h2>
-                <span id="humidity-indicator"></span>
+              Humidity:
+              <h2 id="humidity-value">_</h2>
+              <span id="humidity-indicator"></span>
             </div>
             <div class="soil-container">
-                Soil Moisture:
-                <h2 id="soil-value">22</h2>
-                <span id="soil-indicator"></span>
+              Soil Moisture:
+              <h2 id="soil-value">_</h2>
+              <span id="soil-indicator"></span>
             </div>
           </div>
-          <div class="manual-control-container"></div>
+          <div class="manual-control-container">
+            <form action="/control" method="post">
+              <p>Activate watering system (s):</p>
+              <div>
+                <input type="number" min="1" max="1000" name="second" />
+                <input class="submit" type="submit" value="Water" />
+              </div>
+            </form>
+            <div class="mice-container">
+              <div>
+                <p>Mice Detector Status:</p>
+                <span id="mice-indicator"></span>
+                <button class="submit">Turn-off Alarm</button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </main>
     <div class="blur-circle"></div>
 
-    <!-- <form action="/control" method="post">
-        <h4>Input second how long to water</h4>
-        <input type="number" min="1" max="1000" name="second" style="width: 30px;">
-        <input type="submit" value="Water">
-    </form> -->
+    <script>
+      const data = {
+        humidity: 100,
+        temperature: 22,
+        moist_pct: 34,
+        light: 120,
+        status: "0",
+      };
+      $(document).ready(function () {
+        function updateData() {
+          // $.get("/data", function (data) {
+          //   $("#humidity-value").text(data.humidity);
+          //   $("#temperature-value").text(data.temperature + " C");
+          //   $("#soil-value").text(data.moist_pct + "%");
+          //   $("#light-value").text(data.light);
+          //   $("#status").text(data.status);
+          // });
+
+          $("#humidity-value").text(data.humidity);
+          $("#humidity-indicator").height(`${data.humidity}%`);
+
+          $("#temperature-value").text(data.temperature + " C");
+          $("#temperature-indicator").css("bottom", `${data.temperature}%`);
+
+          $("#soil-value").text(data.moist_pct + "%");
+          $("#soil-indicator").height(`${data.moist_pct}%`);
+
+          $("#light-value").text(data.light);
+
+          $("#status").text(data.status);
+        }
+
+        setInterval(updateData, 1000); // Update every second
+      });
+    </script>
   </body>
 </html>
