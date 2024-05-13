@@ -1,6 +1,7 @@
 from ultralytics import YOLO
 import cv2
 import numpy as np
+import time
 from database import connect_database, insert_mouse_check_data
 
 conn = connect_database()
@@ -15,3 +16,4 @@ for r in results:
         print("MOUSE DETECTED!!")
     else:
         insert_mouse_check_data(conn, '0')
+    time.sleep(0.1)

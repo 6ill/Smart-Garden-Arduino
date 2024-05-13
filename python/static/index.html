@@ -39,7 +39,7 @@
             <form action="/control" method="post">
               <p>Activate watering system (s):</p>
               <div>
-                <input type="number" min="1" max="1000" name="second" />
+                <input type="number" min="1" max="99" name="second" />
                 <input class="submit" type="submit" value="Water" />
               </div>
             </form>
@@ -57,35 +57,35 @@
     <div class="blur-circle"></div>
 
     <script>
-      const data = {
-        humidity: 100,
-        temperature: 22,
-        moist_pct: 34,
-        light: 120,
-        status: "0",
-      };
+      // const data = {
+      //   humidity: 100,
+      //   temperature: 22,
+      //   moist_pct: 34,
+      //   light: 120,
+      //   status: "0",
+      // };
       $(document).ready(function () {
         function updateData() {
-          // $.get("/data", function (data) {
-          //   $("#humidity-value").text(data.humidity);
-          //   $("#temperature-value").text(data.temperature + " C");
-          //   $("#soil-value").text(data.moist_pct + "%");
-          //   $("#light-value").text(data.light);
-          //   $("#status").text(data.status);
-          // });
+          $.get("/data", function (data) {
+            // $("#humidity-value").text(data.humidity);
+            // $("#temperature-value").text(data.temperature + " C");
+            // $("#soil-value").text(data.moist_pct + "%");
+            // $("#light-value").text(data.light);
+            // $("#status").text(data.status);
+            $("#humidity-value").text(data.humidity);
+            $("#humidity-indicator").height(`${data.humidity}%`);
+  
+            $("#temperature-value").text(data.temperature + " C");
+            $("#temperature-indicator").css("bottom", `${data.temperature}%`);
+  
+            $("#soil-value").text(data.moist_pct + "%");
+            $("#soil-indicator").height(`${data.moist_pct}%`);
+  
+            $("#light-value").text(data.light);
+  
+            $("#status").text(data.status);
+          });
 
-          $("#humidity-value").text(data.humidity);
-          $("#humidity-indicator").height(`${data.humidity}%`);
-
-          $("#temperature-value").text(data.temperature + " C");
-          $("#temperature-indicator").css("bottom", `${data.temperature}%`);
-
-          $("#soil-value").text(data.moist_pct + "%");
-          $("#soil-indicator").height(`${data.moist_pct}%`);
-
-          $("#light-value").text(data.light);
-
-          $("#status").text(data.status);
           
           $.get("/mouse", (data) => {  
               $('#mouse').text(data.status);
