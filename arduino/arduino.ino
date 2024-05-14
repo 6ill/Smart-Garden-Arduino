@@ -30,28 +30,31 @@ void setup() {
   dht.begin();
 }
 
-void activate_buzzer(){
-  for(int i=0; i<3;i++){
-    tone(BUZZER_PIN, 400 , 200);
-    delay(150);
-    noTone(BUZZER_PIN);
-    delay(400);
+void activate_buzzer(int status){
+  if(status == 1){
+    for(int i=0; i<2;i++){
+      tone(BUZZER_PIN, 400 , 200);
+      delay(150);
+      noTone(BUZZER_PIN);
+      delay(400);
+    }
   }
  
 }
 
 void triggered(int second){
-  if(second > 99){
-    activate_buzzer();  
-  } else {
+  if(second < 99){
     actuator_status = 1;
     digitalWrite(LED_PIN, HIGH);
     activate_servo(second);
-  }
+  } 
+  // else {
+  //   activate_buzzer(); 
+  // }
 }
 
 void loop() {
-  delay(1000);  // Delay between sensor readings
+  delay(100);  // Delay between sensor readings
   int moist_value = analogRead(SOIL_MOIST_SENSOR); 
   int light_intensity = analogRead(LDR_SENSOR);
   float moisture_percentage = (moist_value/1023.00) * 100 ;
@@ -66,8 +69,11 @@ void loop() {
   if (Serial.available() >= 2) {
     int second = Serial.read() << 8 | Serial.read();
     triggered(second);
+  } else {
+    int status = Serial.read();
+    activate_buzzer(status);
   }
-
+  
   if(moisture_percentage < 75 && light_intensity > 30){
     triggered(1);
   } else {

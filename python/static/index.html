@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" type= "text/css" href= "./static/style.css" />
     <title>Arduino Interface</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   </head>
@@ -36,18 +36,17 @@
             </div>
           </div>
           <div class="manual-control-container">
-            <form action="/control" method="post">
+            <form action="/control" id="water-form" method="post">
               <p>Activate watering system (s):</p>
               <div>
-                <input type="number" min="1" max="99" name="second" />
-                <input class="submit" type="submit" value="Water" />
+                <input type="number" min="1" max="99" name="second" id="input-second" required/>
+                <input class="submit" type="submit" value="Water" id="submit-water"/>
               </div>
             </form>
             <div class="mice-container">
               <div>
                 <p>Mice Detector Status:</p>
                 <span id="mice-indicator"></span>
-                <button class="submit">Turn-off Alarm</button>
               </div>
             </div>
           </div>
@@ -56,22 +55,30 @@
     </main>
     <div class="blur-circle"></div>
 
+    
     <script>
-      // const data = {
-      //   humidity: 100,
-      //   temperature: 22,
-      //   moist_pct: 34,
-      //   light: 120,
-      //   status: "0",
-      // };
+      // document.getElementById("submit-water").addEventListener("click", () => {
+      //   const inputValue = parseInt(document.getElementById("input-water").value, 10);
+      //   if (!isNaN(inputValue)) {
+      //     setTimeout(() => {
+      //       document.getElementById("submit-water").disabled = true;
+      //       document.getElementById("input-second").disabled = true;
+      //     }, inputValue * 1000 + 3000);
+      //   } else {
+      //     console.error("Invalid input value for delay");
+      //   }
+      // })
+      // $('#water-form').on('submit', function(e){
+      //   console.log(Number($("#input-second").val()));
+      //   setTimeout(() => {
+      //     $("#submit-water").prop('disabled',false);
+      //     $("#input-second").prop('disabled',false);
+      //   }, Number($("#input-second").val()) * 1000 + 3000)
+      // });   
+      
       $(document).ready(function () {
         function updateData() {
           $.get("/data", function (data) {
-            // $("#humidity-value").text(data.humidity);
-            // $("#temperature-value").text(data.temperature + " C");
-            // $("#soil-value").text(data.moist_pct + "%");
-            // $("#light-value").text(data.light);
-            // $("#status").text(data.status);
             $("#humidity-value").text(data.humidity);
             $("#humidity-indicator").height(`${data.humidity}%`);
   
@@ -82,25 +89,20 @@
             $("#soil-indicator").height(`${data.moist_pct}%`);
   
             $("#light-value").text(data.light);
-  
-            $("#status").text(data.status);
           });
 
-          
           $.get("/mouse", (data) => {  
-              $('#mouse').text(data.status);
-              if (data.status == '1') {
-                  $.post("/mouse")
+            $('#mice-indicator').text(data.status);
+            if (data.status == '1') {
+                $(".mice-container").css("backgroundColor", "rgb(120, 0, 0)")
               } else {
-                  $.post("/mouse")
+                $(".mice-container").css("backgroundColor", "rgb(46, 46, 46, 0.4)")
               }
-  
-              // fetch('/mouse', {method: 'POST'})
           })
         }
         
 
-        setInterval(updateData, 1000); // Update every second
+        setInterval(updateData, 100); // Update 100 milisecond
       });
     </script>
   </body>
