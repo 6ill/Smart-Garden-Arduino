@@ -55,7 +55,3 @@ def fetch_mouse_check_data(conn):
     c = conn.cursor()
     c.execute("SELECT mouse_exist from mouse_checker")
     return c.fetchall()[-1][0]
-
-if __name__ == "__main__":
-    conn = connect_sensor_database()
-    print(fetch_all_sensor_data(conn)[-30:])
