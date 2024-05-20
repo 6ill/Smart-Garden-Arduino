@@ -8,6 +8,10 @@
 #define SERVO_MOTOR A2
 #define LED_PIN 8
 #define BUZZER_PIN 7
+#define MOISTURE_THRESHOLD 85
+#define LIGHT_THRESHOLD  20 
+#define TEMPERATURE_THRESHOLD 24  
+#define HUMIDITHY_THRESHOLD 55
 
 DHT dht(DHTPIN, DHTTYPE);
 Servo servoBase;
@@ -77,7 +81,8 @@ void loop() {
   }
   
   // Kondisi untuk penyiraman (menggerakan microservo)
-  if(moisture_percentage < 85 && light_intensity > 20 && temperature > 24 && humidity < 55){
+  if(moisture_percentage < MOISTURE_THRESHOLD && light_intensity > LIGHT_THRESHOLD 
+    && temperature > TEMPERATURE_THRESHOLD && humidity < HUMIDITHY_THRESHOLD){
     water_trigger(1);
   } else {
     actuator_status= 0;
