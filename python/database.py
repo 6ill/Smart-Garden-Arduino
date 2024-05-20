@@ -10,7 +10,7 @@ def connect_sensor_database():
         temperature REAL,
         moisture REAL,
         humidity REAL,
-        light_intensity REAL,
+        light_intensity REAL,   
         status CHAR(1)
         );
     '''
@@ -58,4 +58,4 @@ def fetch_mouse_check_data(conn):
 
 if __name__ == "__main__":
     conn = connect_sensor_database()
-    print(fetch_mouse_check_data(conn))
+    print(fetch_all_sensor_data(conn)[-30:])

@@ -1,14 +1,10 @@
-from flask import Flask, render_template, request, jsonify, redirect
+from flask import Flask, request, jsonify, redirect
 import serial
 
 # import sqlite3
 from database import connect_sensor_database, insert_sensor_data, fetch_mouse_check_data, connect_mouse_database
 import time
 from datetime import datetime
-from ultralytics import YOLO
-import cv2
-import numpy as np
-from threading import Thread
 
 app = Flask(__name__)
 ser = serial.Serial("COM3", 9600)
@@ -67,10 +63,10 @@ def get_data():
 @app.route("/control", methods=["POST"])
 def control():
     if request.method == "POST":
+        if 'second' not in request.form:
+            return redirect("/")
         second = request.form["second"]
         control_actuator(int(second))
-    else:
-        return redirect("/")
     return redirect("/")
 
 

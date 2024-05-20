@@ -52,34 +52,47 @@
           </div>
         </div>
       </div>
+      <div class="lds-ellipsis">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
     </main>
     <div class="blur-circle"></div>
+    
 
     
     <script>
-      // document.getElementById("submit-water").addEventListener("click", () => {
-      //   const inputValue = parseInt(document.getElementById("input-water").value, 10);
-      //   if (!isNaN(inputValue)) {
-      //     setTimeout(() => {
-      //       document.getElementById("submit-water").disabled = true;
-      //       document.getElementById("input-second").disabled = true;
-      //     }, inputValue * 1000 + 3000);
-      //   } else {
-      //     console.error("Invalid input value for delay");
-      //   }
-      // })
-      // $('#water-form').on('submit', function(e){
-      //   console.log(Number($("#input-second").val()));
-      //   setTimeout(() => {
-      //     $("#submit-water").prop('disabled',false);
-      //     $("#input-second").prop('disabled',false);
-      //   }, Number($("#input-second").val()) * 1000 + 3000)
-      // });   
+      $('.lds-ellipsis').hide()
+      $('#water-form').on('submit', function(e) {
+          e.preventDefault();  // Prevent the form from submitting normally
+
+          $('.lds-ellipsis').show(easing="linear");
+          // Optionally, submit the form data via AJAX
+          $.post($(this).attr('action'), $(this).serialize());
+          const seconds = Number($("#input-second").val());
+          console.log(seconds);
+          // Disable input and submit button
+          $("#input-second").prop('disabled', true);
+          $("#submit-water").prop('disabled', true);
+          
+          // loader icon
+
+          // Re-enable input and submit button after specified time
+          setTimeout(() => {
+              $("#input-second").prop('disabled', false);
+              $("#submit-water").prop('disabled', false);
+              $('.lds-ellipsis').hide();
+           }, seconds * 1000 + 2000);
+          
+      });
       
       $(document).ready(function () {
         function updateData() {
+
           $.get("/data", function (data) {
-            $("#humidity-value").text(data.humidity);
+            $("#humidity-value").text(`${data.humidity}%`);
             $("#humidity-indicator").height(`${data.humidity}%`);
   
             $("#temperature-value").text(data.temperature + " C");
@@ -102,7 +115,7 @@
         }
         
 
-        setInterval(updateData, 100); // Update 100 milisecond
+        setInterval(updateData, 500); // Update 100 milisecond
       });
     </script>
   </body>
