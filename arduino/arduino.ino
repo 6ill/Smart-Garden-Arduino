@@ -1,7 +1,7 @@
 #include <DHT.h>
 #include <Servo.h>
 
-#define DHTPIN 2     // Pin connected to the DHT22 sensor
+#define DHTPIN 3     // Pin connected to the DHT22 sensor
 #define DHTTYPE DHT22   // DHT 22 (AM2302) sensor type
 #define SOIL_MOIST_SENSOR A0
 #define LDR_SENSOR A1
